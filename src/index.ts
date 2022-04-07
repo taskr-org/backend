@@ -3,7 +3,10 @@ import { NonBodiedContext } from "hyougen/lib/routers";
 import koa from "koa";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import Showdown from "showdown";
+import path from "path";
 import AuthRouter from "./routers/auth";
+import fsp from "fs/promises";
 
 const TAG = "src/main.ts";
 
@@ -24,10 +27,21 @@ async function main() {
         ctx.hyRes.success("Hello, World!");
     });
 
+    const convertor = new Showdown.Converter();
+    app.get("/docs", async (ctx) => {
+        const fileContent = await fsp.readFile(
+            path.join(__dirname, "..") + "/doc.md"
+        );
+        const html = convertor.makeHtml(fileContent.toString());
+        ctx.type = "html";
+        ctx.body = html;
+    });
+
     AuthRouter(app, "/user");
 
     const PORT = Number(process.env.PORT) || 8080;
     app.Listen(PORT, () => {
+        app.saveApiDoc();
         Logger.success(`Server started on PORT ${PORT}`, TAG);
     });
 }
