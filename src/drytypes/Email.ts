@@ -7,5 +7,5 @@ export const Email = makeDryType<string>((x) => {
     if (!String.guard(x)) return { success: false };
 
     if (re.test(x.toLowerCase())) return { success: true };
-    else return { success: false, message: "Invalid Email!" };
+    else return { success: false, message: "Invalid Email" };
 }, "email (string) ");

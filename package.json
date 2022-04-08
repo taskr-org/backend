@@ -10,6 +10,7 @@
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.0",
     "drytypes": "^0.4.9",
+    "google-auth-library": "^7.14.1",
     "hyougen": "^0.5.3",
     "koa": "^2.13.4",
     "mongoose": "^6.2.10",

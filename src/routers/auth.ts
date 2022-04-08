@@ -3,10 +3,12 @@ import { Email } from "../drytypes/Email";
 import { FullName } from "../drytypes/FullName";
 import { Password } from "../drytypes/Password";
 import { Username } from "../drytypes/Username";
+import { Token } from "../drytypes/Token";
 import User from "../models/User";
 import { doesUserExist } from "../utils/user";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
+import { verifyToken } from "../utils/gauth";
 
 const TAG = "src/routers/auth.ts";
 
@@ -74,4 +76,16 @@ export default (wapp: WrappedApp, root: string) => {
             });
         }
     );
+
+    router.post("/gauth", { token: Token }, async (ctx) => {
+        const { token } = ctx.hyBody;
+
+        // verify auth token and return g userid
+        const userid = await verifyToken(token);
+
+        // TODO: get userdata from payload and create/login as required
+        // https://developers.google.com/identity/one-tap/android/idtoken-auth
+
+        ctx.hyRes.genericSuccess();
+    });
 };
