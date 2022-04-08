@@ -5,6 +5,8 @@ import { Password } from "../drytypes/Password";
 import { Username } from "../drytypes/Username";
 import User from "../models/User";
 import { doesUserExist } from "../utils/user";
+import bcrypt from "bcrypt";
+import { v4 as uuid } from "uuid";
 
 const TAG = "src/routers/auth.ts";
 
@@ -35,6 +37,41 @@ export default (wapp: WrappedApp, root: string) => {
             await User.create({ email, password, username, fullname });
 
             ctx.hyRes.success("User registered successfully!");
+        }
+    );
+
+    router.post(
+        "/login",
+        { username: Username, password: Password },
+        async (ctx) => {
+            const { username, password } = ctx.hyBody;
+
+            const existingUser = await User.findOne({ username });
+
+            if (existingUser == undefined) {
+                throw new HyError(
+                    ErrorKind.NOT_FOUND,
+                    "User with specified username does not exist.",
+                    TAG
+                );
+            }
+
+            if (!(await bcrypt.compare(password, existingUser.password))) {
+                throw new HyError(
+                    ErrorKind.UNAUTHORIZED,
+                    "Invalid username or password.",
+                    TAG
+                );
+            }
+
+            const token = uuid();
+
+            existingUser.token = token;
+            await existingUser.save();
+
+            return ctx.hyRes.success("User was logged in successfully", {
+                token,
+            });
         }
     );
 };

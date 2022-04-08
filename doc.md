@@ -10,3 +10,7 @@
 	- `email`: email (string) 
 	- `password`: password (string) 
 
+* **POST** /user/login
+	- `username`: username (string) 
+	- `password`: password (string) 
+
