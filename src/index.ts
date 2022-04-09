@@ -6,8 +6,8 @@ import mongoose from "mongoose";
 import Showdown from "showdown";
 import path from "path";
 import AuthRouter from "./routers/auth";
+import TaskRouter from "./routers/task";
 import fsp from "fs/promises";
-import { dirname } from "path";
 
 const TAG = "src/main.ts";
 
@@ -39,6 +39,7 @@ async function main() {
     });
 
     AuthRouter(app, "/user");
+    TaskRouter(app, "/task");
 
     const PORT = Number(process.env.PORT) || 8080;
     app.Listen(PORT, () => {

@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import { UserSchema } from "../../MonType";
 
-const UserSchema = new Schema(
+const UserSchema = new Schema<UserSchema>(
     {
         username: { type: String, required: true },
         email: { type: String, required: true },

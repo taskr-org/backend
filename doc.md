@@ -17,3 +17,12 @@
 * **POST** /user/gauth
 	- `token`: token (string) 
 
+* **POST** /task/new
+	- `title`: title (string) 
+	- `description`: description (string) 
+	- `notification`: boolean
+	- `location`: string
+	- `link`: string
+	- `datetime`: string
+	- `tags`: array<string>
+
