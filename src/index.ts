@@ -7,6 +7,7 @@ import Showdown from "showdown";
 import path from "path";
 import AuthRouter from "./routers/auth";
 import fsp from "fs/promises";
+import { dirname } from "path";
 
 const TAG = "src/main.ts";
 
@@ -30,7 +31,7 @@ async function main() {
     const convertor = new Showdown.Converter();
     app.get("/docs", async (ctx) => {
         const fileContent = await fsp.readFile(
-            path.join(__dirname, "..") + "/doc.md"
+            path.join(require("path").resolve("./")) + "/doc.md"
         );
         const html = convertor.makeHtml(fileContent.toString());
         ctx.type = "html";
