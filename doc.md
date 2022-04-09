@@ -3,6 +3,10 @@
 
 * **GET** /docs
 
+* **GET** /task/getall
+
+* **GET** /task/get/:id
+
 # POST routes
 * **POST** /user/register
 	- `fullname`: fullname (string) 
@@ -25,4 +29,8 @@
 	- `link`: string
 	- `datetime`: string
 	- `tags`: array<string>
+
+# DELETE routes
+* **DELETE** /task/delete
+	- `id`: string
 

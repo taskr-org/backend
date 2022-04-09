@@ -11,6 +11,7 @@ const TaskSchema = new Schema<TaskSchema>(
         location: { type: String, required: false },
         tags: { type: [String], required: true },
         isCompleted: { type: Boolean, default: false },
+        userID: { type: String, required: true },
     },
     {
         timestamps: true,
