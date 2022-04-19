@@ -24,11 +24,11 @@
 * **POST** /task/new
 	- `title`: title (string) 
 	- `description`: description (string) 
-	- `notification`: boolean
-	- `location`: string
+	- `reminder`: boolean
 	- `link`: string
+	- `priority`: string
 	- `datetime`: string
-	- `tags`: array<string>
+	- `tag`: string
 
 # DELETE routes
 * **DELETE** /task/delete

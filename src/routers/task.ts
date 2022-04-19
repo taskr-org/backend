@@ -1,5 +1,5 @@
-import { getRoutedWrappedApp, WrappedApp } from "hyougen";
-import { String, ArrayOf, Boolean } from "drytypes";
+import { ErrorKind, getRoutedWrappedApp, HyError, WrappedApp } from "hyougen";
+import { String, Boolean } from "drytypes";
 import { verifyToken } from "../middlewares/verifyToken";
 import { TaskTitle } from "../drytypes/TaskTitle";
 import { Description } from "../drytypes/Description";
@@ -16,31 +16,35 @@ export default (wapp: WrappedApp, root: string) => {
         {
             title: TaskTitle,
             description: Description,
-            notification: Boolean,
-            location: String,
+            reminder: Boolean,
             link: String,
+            priority: String,
             datetime: String,
-            tags: ArrayOf(String),
+            tag: String,
         },
         async (ctx) => {
             const {
                 title,
                 description,
-                notification,
-                location,
+                reminder,
                 link,
                 datetime,
-                tags,
+                priority,
+                tag,
             } = ctx.hyBody;
+
+            // TODO (minor)
+            // 1. check if tag valid from user object
+            // 2. check if priority value valid
 
             await Task.create({
                 title,
                 description,
-                notification,
-                location,
+                reminder,
                 link,
                 datetime,
-                tags,
+                priority,
+                tag,
                 userID: ctx.state.user.id,
             });
 
@@ -57,14 +61,18 @@ export default (wapp: WrappedApp, root: string) => {
 
     router.get("/get/:id", async (ctx) => {
         const id = ctx.params.id;
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            throw new HyError(ErrorKind.BAD_REQUEST, "Invalid task id", TAG);
+        }
 
-        const task: TaskSchema = await Task.findOne({ id }).lean();
+        const task = await Task.findById(id).lean();
         ctx.hyRes.success("Request successful", { task: task });
     });
 
+    // TODO: Fix
     router.delete("/delete", { id: String }, async (ctx) => {
         const { id } = ctx.hyBody;
-        await Task.deleteOne({ id });
+        await Task.findByIdAndDelete(id);
 
         ctx.hyRes.genericSuccess();
     });

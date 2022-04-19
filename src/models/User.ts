@@ -9,6 +9,7 @@ const UserSchema = new Schema<UserSchema>(
         password: { type: String, required: true },
         isVerified: { type: Boolean, default: true },
         fullname: { type: String, required: true },
+        tags: { type: [String], default: ["home", "personal"] },
         token: { type: String },
     },
     {

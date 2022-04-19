@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 export interface TaskSchema {
   title: string;
   description: string;
-  notification: boolean;
+  reminder: boolean;
   datetime: string;
   link: string;
-  location: string;
-  tags: string[];
+  tag: string;
+  priority: string;
   isCompleted: boolean;
   userID: string;
   createdAt: Date;
@@ -22,6 +22,7 @@ export interface UserSchema {
   password: string;
   isVerified: boolean;
   fullname: string;
+  tags: string[];
   token: string;
   createdAt: Date;
   updatedAt: Date;
